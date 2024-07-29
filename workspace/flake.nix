@@ -15,7 +15,7 @@
               allowUnfree = true;
             };
           };
-
+          
           init = import ./init.nix { inherit pkgs; };
           ssh-entrypoint = import ./ssh-entrypoint.nix { inherit pkgs; };
           service = import ./services/service.nix { inherit pkgs; };
@@ -38,7 +38,7 @@
           '');
 
           additional = import ./additional/additional.nix { inherit pkgs; };
-
+          
           corePackages = with pkgs; [
             bashInteractive
             cacert
