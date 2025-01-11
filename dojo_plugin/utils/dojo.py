@@ -57,6 +57,7 @@ DOJO_SPEC = Schema({
 
     Optional("image"): IMAGE_REGEX,
     Optional("allow_privileged"): bool,
+    Optional("show_scoreboard"): bool,
     Optional("importable"): bool,
 
     Optional("import"): {
@@ -69,6 +70,8 @@ DOJO_SPEC = Schema({
 
         Optional("image"): IMAGE_REGEX,
         Optional("allow_privileged"): bool,
+        Optional("show_challenges"): bool,
+        Optional("show_scoreboard"): bool,
         Optional("importable"): bool,
 
         Optional("import"): {
