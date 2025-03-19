@@ -1,0 +1,11 @@
+body {
+    font-family: Arial, sans-serif;
+}
+.card {
+    max-width: 600px;
+    margin: auto;
+    border-radius: 10px;
+}
+.alert {
+    text-align: center;
+}
