@@ -113,7 +113,7 @@ h1, h2, h3, h4 {
 }
 
 body, table, .form-control:focus, .close {
-    color: #eaeaea !important;
+    color: #000000 !important;
 }
 
 nav {

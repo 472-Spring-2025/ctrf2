@@ -3,12 +3,11 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top">
   <div class="container">
     <a href="{{ url_for('views.static_html', route='/') }}" class="brand-mono-bold">
-      {% if Configs.ctf_name == "pwn.college" %}
-      <span class="brand-white">pwn</span><span class="brand-dot-white">.</span><span class="brand-white">college</span>
-      {% else %}
-      <span class="brand-white">{{ Configs.ctf_name }}</span>
-      {% endif %}
+      
+      
+      
     </a>
+    <img src="{{ url_for('views.themes', path='img/ncsu.png') }}" alt="pwn.college Logo"  width="300" />
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#base-navbars"
             aria-controls="base-navbars" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -21,7 +20,7 @@
         {{ navitem("Desktop", url_for("pwncollege_workspace.view_workspace", service="desktop"), "fa-desktop") }}
         {{ navitem("Help", url_for("pwncollege_sensai.view_sensai"), "fa-question", new=True) }}
         {{ navitem("Chat", "https://discord.gg/pwncollege", "fa-comments", new=True) }}
-        {{ navitem("CTRF", "test-add-page")}}
+        {{ navitem("CTRF", "/test-add-page")}}
       </ul>
       <hr class="d-sm-flex d-md-flex d-lg-none">
       <ul class="navbar-nav ml-md-auto d-block d-sm-flex d-md-flex">
