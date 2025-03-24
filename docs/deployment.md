@@ -44,7 +44,7 @@ It will take some time to initialize everything and build the challenge docker i
 You can check on your container (and the progress of the initial build) with:
 
 ```sh
-docker exec dojo dojo logs
+docker exec ctrf ctrf logs
 ```
 
 Once things are setup, you should be able to access the dojo and login with username `admin` and password `admin`.
