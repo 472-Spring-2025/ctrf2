@@ -5,19 +5,19 @@ While we recommend using the [pwn.college](https://pwn.college) deployment, you 
 ```sh
 curl -fsSL https://get.docker.com | /bin/sh
 
-DOJO_PATH="./dojo"
-DATA_PATH="./dojo/data"
+CTRF_PATH="./ctrf"
+DATA_PATH="./ctrf/data"
 
-git clone https://github.com/472-Spring-2025/ctrf2 "$DOJO_PATH"
-docker build -t 472-Spring-2025/ctrf2 "$DOJO_PATH"
+git clone https://github.com/472-Spring-2025/ctrf2 "$CTRF_PATH"
+docker build -t 472-Spring-2025/ctrf2 "$CTRF_PATH"
 
-# this is needed for the dojo's networking
+# this is needed for the ctrf's networking
 modprobe br_netfilter
 
 docker run \
-    --name dojo \
+    --name ctrf \
     --privileged \
-    -v "${DOJO_PATH}:/opt/pwn.college" \
+    -v "${CTRF_PATH}:/opt/pwn.college" \
     -v "${DATA_PATH}:/data" \
     -p 22:22 -p 80:80 -p 443:443 \
     -d \
