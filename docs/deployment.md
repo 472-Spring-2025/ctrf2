@@ -8,8 +8,8 @@ curl -fsSL https://get.docker.com | /bin/sh
 DOJO_PATH="./dojo"
 DATA_PATH="./dojo/data"
 
-git clone https://github.com/pwncollege/dojo "$DOJO_PATH"
-docker build -t pwncollege/dojo "$DOJO_PATH"
+git clone https://github.com/472-Spring-2025/ctrf2 "$DOJO_PATH"
+docker build -t 472-Spring-2025/ctrf2 "$DOJO_PATH"
 
 # this is needed for the dojo's networking
 modprobe br_netfilter
@@ -21,7 +21,7 @@ docker run \
     -v "${DATA_PATH}:/data" \
     -p 22:22 -p 80:80 -p 443:443 \
     -d \
-    pwncollege/dojo
+    472-Spring-2025/ctrf2
 ```
 
 This will run the initial setup, including building the challenge docker image.
