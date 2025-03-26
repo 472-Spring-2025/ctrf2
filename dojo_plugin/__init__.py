@@ -33,6 +33,7 @@ from .pages.writeups import writeups
 from .pages.belts import belts
 from .pages.index import static_html_override
 from .api import api
+from .pages.new_ctf import new_ctf
 
 
 class DojoChallenge(BaseChallenge):
@@ -134,6 +135,7 @@ def load(app):
     del app.view_functions["users.public"]
     del app.view_functions["users.listing"]
 
+
     if not app.debug:
         app.before_request(redirect_dojo)
 
@@ -148,7 +150,7 @@ def load(app):
     app.register_blueprint(writeups)
     app.register_blueprint(belts)
     app.register_blueprint(api, url_prefix="/pwncollege_api/v1")
-
+    app.register_blueprint(new_ctf)
     app.jinja_env.filters["markdown"] = render_markdown
 
     register_admin_plugin_menu_bar("Dojos", "/admin/dojos")

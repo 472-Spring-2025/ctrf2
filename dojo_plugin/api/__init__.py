@@ -11,7 +11,7 @@ from .v1.scoreboard import scoreboard_namespace
 from .v1.ssh_key import ssh_key_namespace
 from .v1.workspace_tokens import workspace_tokens_namespace
 from .v1.workspace import workspace_namespace
-
+from .v1.new_ctf import new_ctf_namespace
 
 api = Blueprint("pwncollege_api", __name__)
 
@@ -26,3 +26,4 @@ api_v1.add_namespace(scoreboard_namespace, "/scoreboard")
 api_v1.add_namespace(ssh_key_namespace, "/ssh_key")
 api_v1.add_namespace(workspace_tokens_namespace, "/workspace_tokens")
 api_v1.add_namespace(workspace_namespace, "/workspace")
+api_v1.add_namespace(new_ctf_namespace, "/new-ctf")
