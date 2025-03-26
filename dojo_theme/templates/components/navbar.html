@@ -3,11 +3,9 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top">
   <div class="container">
     <a href="{{ url_for('views.static_html', route='/') }}" class="brand-mono-bold">
-      
-      
-      
+      <img src="{{ url_for('views.themes', path='img/ncsu.png') }}" alt="pwn.college Logo"  width="200" />
     </a>
-    <img src="{{ url_for('views.themes', path='img/ncsu.png') }}" alt="pwn.college Logo"  width="300" />
+    
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#base-navbars"
             aria-controls="base-navbars" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -20,7 +18,7 @@
         {{ navitem("Desktop", url_for("pwncollege_workspace.view_workspace", service="desktop"), "fa-desktop") }}
         {{ navitem("Help", url_for("pwncollege_sensai.view_sensai"), "fa-question", new=True) }}
         {{ navitem("Chat", "https://discord.gg/pwncollege", "fa-comments", new=True) }}
-        {{ navitem("CTRF", "/test-add-page")}}
+        {{ navitem("CTRF", url_for("pwncollege_new_ctf.create_ctf"))}}
       </ul>
       <hr class="d-sm-flex d-md-flex d-lg-none">
       <ul class="navbar-nav ml-md-auto d-block d-sm-flex d-md-flex">
