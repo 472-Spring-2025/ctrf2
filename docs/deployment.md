@@ -5,23 +5,23 @@ While we recommend using the [pwn.college](https://pwn.college) deployment, you 
 ```sh
 curl -fsSL https://get.docker.com | /bin/sh
 
-CTRF_PATH="./ctrf"
+DOJO_PATH="./ctrf"
 DATA_PATH="./ctrf/data"
 
-git clone https://github.com/472-Spring-2025/ctrf2 "$CTRF_PATH"
-docker build -t 472-Spring-2025/ctrf2 "$CTRF_PATH"
+git clone https://github.com/472-Spring-2025/ctrf2 "$DOJO_PATH"
+docker build -t pwncollege/dojo "$DOJO_PATH"
 
-# this is needed for the ctrf's networking
+# this is needed for the dojo's networking
 modprobe br_netfilter
 
 docker run \
-    --name ctrf \
+    --name dojo \
     --privileged \
-    -v "${CTRF_PATH}:/opt/pwn.college" \
+    -v "${DOJO_PATH}:/opt/pwn.college" \
     -v "${DATA_PATH}:/data" \
     -p 22:22 -p 80:80 -p 443:443 \
     -d \
-    472-Spring-2025/ctrf2
+    pwncollege/dojo
 ```
 
 This will run the initial setup, including building the challenge docker image.
