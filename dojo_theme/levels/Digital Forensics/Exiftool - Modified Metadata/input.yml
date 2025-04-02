@@ -1,0 +1,4 @@
+image-name: new_picture.png
+meta-data-attributes: Author,Caption,Flag
+meta-data-values: Andrew Parr,Pain,This-will-get-replaced
+attribute-with-flag: Flag

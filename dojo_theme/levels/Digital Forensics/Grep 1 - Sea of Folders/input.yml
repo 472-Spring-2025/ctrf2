@@ -1,0 +1,7 @@
+#num_subs and winning_solution's length must be the same
+#If using words, must have at least num_dir examples
+
+num_dirs: 5
+num_subs: 7
+words: produce,deli,fruits,vegetables,milk,eggs,frozen,breakfast,processed-foods,dairy,fish,oats,drinks,alcohol,snacks,teas,coffee,pasta,rice,international,baking-supplies,household,utilities,pharmacy,pet food   
+winning_solution: fruits,milk,alcohol,vegetables,breakfast,dairy,snacks
