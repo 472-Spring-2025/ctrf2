@@ -34,6 +34,7 @@ from .pages.belts import belts
 from .pages.index import static_html_override
 from .api import api
 from .pages.new_ctf import new_ctf
+from .pages.templates import templates
 
 
 class DojoChallenge(BaseChallenge):
@@ -151,6 +152,7 @@ def load(app):
     app.register_blueprint(belts)
     app.register_blueprint(api, url_prefix="/pwncollege_api/v1")
     app.register_blueprint(new_ctf)
+    app.register_blueprint(templates)
     app.jinja_env.filters["markdown"] = render_markdown
 
     register_admin_plugin_menu_bar("Dojos", "/admin/dojos")
