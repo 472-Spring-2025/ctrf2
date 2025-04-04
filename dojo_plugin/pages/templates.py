@@ -20,3 +20,9 @@ def get_template_levels(category):
     dirs = os.listdir("/opt/CTFd/CTFd/themes/dojo_theme/levels/" + str(category))
     response_data = {"templates": dirs}
     return jsonify(response_data), 200
+
+@templates.route("/templates/<category>/<level>")
+def get_level_input(category, level):
+    file = open("/opt/CTFd/CTFd/themes/dojo_theme/levels/" + str(category) + "/" + str(level) + "/input.yml")
+    response_data = {"input": file.readlines()}
+    return jsonify(response_data), 200

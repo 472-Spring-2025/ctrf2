@@ -43,13 +43,21 @@
                 <div id="extraForm" style="display: none;">
                     <h4>Additional Information</h4>
                     <div class="mb-3">
-                        <label class="form-label">Template Select</label>
-                        <select class="form-select" id="challenge_list">
+                        <label class="form-label">Level Select</label>
+                        <select class="form-select" id="challenge_list" onchange=getInput()>
                         </select>
                     </div>
+                    
                 </div>
 
-                
+                <div id="challenge_form" style="display: none;">
+                    <div class="mb-3">
+                        <label for="name">Input:</label>
+                        <input type="text" id="name" name="name">
+                        
+                        
+                    </div>   
+                </div>
 
                 <div class="mb-3">
                     <label class="form-label">Hint (Optional)</label>
@@ -120,6 +128,27 @@
                 });
             
         }
+
+    async function getInput() {
+        let selectedCategory = document.getElementById("ctf_category").value;
+        let selectedLevel = document.getElementById("challenge_list")    
+        let response =  await fetch('http://localhost.pwn.college/templates/' + selectedCategory + "/" + selectedLevel)
+            // Show extra form when a category is selected
+            let extraForm = document.getElementById("challenge_form");
+            if (selectedCategory && selectedLevel) {
+                extraForm.style.display = "block"; // Show the extra form
+            } else {
+                extraForm.style.display = "none";  // Hide it when no category is selected
+            }
+            inputs = await response.json()
+            console.log(inputs)
+            inputs.forEach(function (item){
+                extraForm.innerHTML += '<div class="mb-3"><label for='+ item +'>Input:</label><input type="text" id=' + item +' name='+item+'></div>'  
+            })
+            
+
+            
+    }
     </script>
 </body>
 {% endblock %}

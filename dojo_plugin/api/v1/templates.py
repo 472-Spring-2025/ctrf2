@@ -4,11 +4,11 @@ template_namespace = Namespace("templates", description="Endpoint to manage temp
 
 
 @template_namespace.route("")
-class Belts(Resource):
+class Templates(Resource):
     def get(self):
         return {"success": True}
     
 @template_namespace.route("/templates")
-class Belts(Resource):
+class Templates(Resource):
     def get(self):
         return {"success": True}
