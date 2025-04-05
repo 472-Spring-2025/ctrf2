@@ -1,4 +1,5 @@
 from flask import Blueprint, Response, render_template, abort, jsonify
+import yaml
 import os
 templates = Blueprint("pwncollege_templates", __name__)
 
@@ -23,6 +24,11 @@ def get_template_levels(category):
 
 @templates.route("/templates/<category>/<level>")
 def get_level_input(category, level):
-    file = open("/opt/CTFd/CTFd/themes/dojo_theme/levels/" + str(category) + "/" + str(level) + "/input.yml")
-    response_data = {"input": file.readlines()}
-    return jsonify(response_data), 200
+    file_path = f"/opt/CTFd/CTFd/themes/dojo_theme/levels/{category}/{level}/input.yml"
+    
+    with open(file_path, "r") as file:
+        data = yaml.safe_load(file)
+
+    # Send just the keys or specific values you're interested in
+    keys = list(data.keys())  # or extract specific ones
+    return jsonify(keys), 200

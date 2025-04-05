@@ -129,26 +129,38 @@
             
         }
 
-    async function getInput() {
-        let selectedCategory = document.getElementById("ctf_category").value;
-        let selectedLevel = document.getElementById("challenge_list")    
-        let response =  await fetch('http://localhost.pwn.college/templates/' + selectedCategory + "/" + selectedLevel)
-            // Show extra form when a category is selected
-            let extraForm = document.getElementById("challenge_form");
-            if (selectedCategory && selectedLevel) {
-                extraForm.style.display = "block"; // Show the extra form
-            } else {
-                extraForm.style.display = "none";  // Hide it when no category is selected
-            }
-            inputs = await response.json()
-            console.log(inputs)
-            inputs.forEach(function (item){
-                extraForm.innerHTML += '<div class="mb-3"><label for='+ item +'>Input:</label><input type="text" id=' + item +' name='+item+'></div>'  
-            })
-            
+        async function getInput() {
+    let selectedCategory = document.getElementById("ctf_category").value;
+    let selectedLevel = document.getElementById("challenge_list").value;
 
-            
+    const extraForm = document.getElementById("challenge_form");
+
+    if (selectedCategory && selectedLevel) {
+        extraForm.innerHTML = ""; // clear
+        extraForm.style.display = "block";
+    } else {
+        extraForm.style.display = "none";
+        return;
     }
+
+    try {
+        let response = await fetch(`http://localhost.pwn.college/templates/${selectedCategory}/${selectedLevel}`);
+        let inputs = await response.json();
+
+        console.log(inputs);
+
+        inputs.forEach(function(item) {
+            extraForm.innerHTML += 
+                `<div class="mb-3">
+                    <label for="${item}">Input ${item}:</label>
+                    <input type="text" class="form-control" id="${item}" name="${item}">
+                </div>`;
+        });
+
+    } catch (error) {
+        console.error("Error fetching inputs:", error);
+    }
+}
     </script>
 </body>
 {% endblock %}
