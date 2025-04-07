@@ -1,0 +1,20 @@
+#!/bin/bash
+CONFIG_FILE="./input.yml"
+
+# Check if yq is installed (use this for making the init file have config variables included)
+if ! command -v yq &> /dev/null; then
+    echo "Error: yq is not installed. Install it using 'sudo apt install yq' or 'brew install yq'."
+    exit 1
+fi
+
+# use CONFIG_FILE.command to allow the chmod or chown command to be run by the hacker user
+COMMAND=$(yq '.command' "$CONFIG_FILE")
+chmod u+s /usr/bin/$COMMAND
+mkdir -p /challenge/bin && ln -s /usr/bin/$COMMAND /challenge/bin/
+
+# use CONFIG_FILE.group_name to set the group name of the hacker user
+GROUP_NAME=$(yq '.group_name' "$CONFIG_FILE")
+groupadd GROUP_NAME
+adduser hacker GROUP_NAME
+FLAG_PATH=$(yq '.path_to_flag' "$CONFIG_FILE")
+mv /flag $FLAG_PATH
