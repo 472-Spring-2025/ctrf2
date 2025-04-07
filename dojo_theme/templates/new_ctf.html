@@ -22,7 +22,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form method="POST">
+            <form action="/new-ctf" method="POST">
                 <div class="mb-3">
                     <label class="form-label">CTF Challenge Name</label>
                     <input type="text" class="form-control" name="ctf_name" required>
@@ -34,7 +34,7 @@
                 
                 <div class="mb-3">
                     <label class="form-label">CTF Challenge Category</label>
-                    <select class="form-select" id="ctf_category" onchange=updateCategory() required>
+                    <select class="form-select" name="ctf_category" id="ctf_category" onchange=updateCategory() required>
                         <option value="">Select a Category</option>
                         
                     </select>
@@ -44,7 +44,7 @@
                     <h4>Additional Information</h4>
                     <div class="mb-3">
                         <label class="form-label">Level Select</label>
-                        <select class="form-select" id="challenge_list" onchange=getInput()>
+                        <select class="form-select" name="challenge_list" id="challenge_list" onchange=getInput()>
                         </select>
                     </div>
                     
