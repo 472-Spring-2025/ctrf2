@@ -3,13 +3,17 @@ from flask import Blueprint, Response, render_template, abort
 import yaml
 import runpy
 import os
+import shutil
 from CTFd.utils.user import get_current_user
 from CTFd.utils.decorators import authed_only
+from CTFd.plugins import bypass_csrf_protection
+
+
+
 
 new_ctf = Blueprint("pwncollege_new_ctf", __name__)
-new_ctf.secret_key = 'your_secret_key'
 @new_ctf.route('/new-ctf', methods=['GET', 'POST'])
-@authed_only
+@bypass_csrf_protection
 def create_ctf():
     if request.method == 'POST':
         #Needs to grab the runnable script, a viable input file, and the scripts specific __init__ file
@@ -23,18 +27,27 @@ def create_ctf():
             print("Level path:", levelPath)
         else:
             print("Missing data!")
-        
         with open(levelPath + "/" + "input.yml", "r") as f:
             allowed_keys = yaml.safe_load(f)
 
-        data = request.get_json()
+        data = request.form.to_dict()
 
         # Filter data to include only the allowed keys
         filtered_data = {key: data[key] for key in allowed_keys if key in data}
-        yaml.dump(filtered_data, open(levelPath + "/tmp/tmp.yml", "w"))
         dirs = os.listdir(levelPath)
-        runnable = [f for f in dirs if f.endswith(".py")]
-        runpy.run_path(levelPath + "/" + runnable[0], levelPath + "/tmp/tmp.yml")
+        os.makedirs("/tmp/repoDir", exist_ok=True)
+        os.makedirs("/tmp/file_gen", exist_ok=True)  # Create directory if it doesn't exist
+        with open("/tmp/file_gen/input.yml", "w") as f:
+            f.write("your data here")
+        
+        for file in dirs:
+            shutil.copy(levelPath + "/" + file, "/tmp/repoDir/"+file)
+
+        with open("/tmp/repoDir/input.yml", "w") as f:
+            f.write("your data here")
+
+        #return redirect(url_for("pwncollege_dojos.listing"))
+
     return render_template('new_ctf.html')
 
 

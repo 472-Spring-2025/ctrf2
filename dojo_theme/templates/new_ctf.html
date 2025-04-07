@@ -22,7 +22,7 @@
                     {% endfor %}
                 {% endif %}
             {% endwith %}
-            <form action="/new-ctf" method="POST">
+            <form action="{{url_for('pwncollege_new_ctf.create_ctf')}}" method="POST">
                 <div class="mb-3">
                     <label class="form-label">CTF Challenge Name</label>
                     <input type="text" class="form-control" name="ctf_name" required>
@@ -68,6 +68,8 @@
                     <button type="submit" class="btn btn-secondary">Save as Draft</button>
                     <button type="submit" class="btn btn-primary">Publish</button>
                 </div>
+                <input type="hidden" name="nonce" value="{{ session }}">
+
             </form>
         </div>
     </div>
