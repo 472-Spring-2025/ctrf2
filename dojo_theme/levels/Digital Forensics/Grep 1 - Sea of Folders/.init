@@ -1,0 +1,3 @@
+#!/bin/bash
+python grep_template.py
+rm input.yml

@@ -20,7 +20,8 @@ for i in range(len(meta_data_attributes)):
     attr = meta_data_attributes[i]
     val = meta_data_values[i]
     if(meta_data_attributes[i].strip() == flag_attr.strip()):
-        val = "flag{1_4m_4_f149}"
+        with open("/flag", "r") as f:
+            val = f.readline()
     metadata.add_text(attr, val)
 
 # Save the image with the new metadata

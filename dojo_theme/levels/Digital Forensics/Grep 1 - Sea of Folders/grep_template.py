@@ -64,20 +64,17 @@ if(winning_sol):
         winning_sol_vec.append(words.index(word))
     
 folder_space = [winning_sol_vec]
-print(folder_space)
 for i in range(num_dirs - 1):
     new_row = []
     for j in range(sub_levels):
         rand_int = random.randint(0, len(words) - 1)
         col = []
         for num in range(len(folder_space)):
-            print(str(num) + "," +str(j))
             col.append(folder_space[num][j])
         while(rand_int in col):
             rand_int = (rand_int + 1) % (num_dirs - 1)
         new_row.append(rand_int)
     folder_space.append(new_row)
-print(folder_space)
 
 
 
@@ -96,7 +93,6 @@ while(init_arr != end_arr):
     os.makedirs(base+extra, exist_ok=True)
     idx = len(init_arr) - 1
     arr_incriment(init_arr, idx, num_dirs)
-    print(init_arr)
 
 for i in range(len(end_arr)):
     end_arr[i] = random.randint(0, num_dirs - 1)
@@ -104,11 +100,13 @@ if(winning_sol):
     end_arr = winning_sol_vec
 extra = get_path(end_arr)
 #fin = open("../../input/exec/sample1", "r")
-with open(base+extra+"/flag{th1s_15_4_54mp13}", "w") as fout:
-    fout.write("")
+flag = ""
+with open("/flag", "w") as fout:
+    flag = fout.readline()
+with open(base+extra+flag, "w") as fout:
+    fout.write(flag)
 
 
-print(end_arr)
     
 
 

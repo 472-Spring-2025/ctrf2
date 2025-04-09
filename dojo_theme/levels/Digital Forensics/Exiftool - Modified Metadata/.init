@@ -1,0 +1,3 @@
+#!/bin/bash
+python png_modifier.py
+rm input.yml

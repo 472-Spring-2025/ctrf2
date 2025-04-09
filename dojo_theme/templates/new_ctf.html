@@ -24,12 +24,36 @@
             {% endwith %}
             <form action="{{url_for('pwncollege_new_ctf.create_ctf')}}" method="POST">
                 <div class="mb-3">
+                    <label class="form-label">CTF Challenge ID</label>
+                    <input type="text" class="form-control" name="ctf_id" required>
+                </div>
+                <div class="mb-3">
                     <label class="form-label">CTF Challenge Name</label>
                     <input type="text" class="form-control" name="ctf_name" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">CTF Challenge Description</label>
                     <textarea class="form-control" name="ctf_description" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Optional CTF Challenge Type</label>
+                    <select class="form-select" name="ctf_type" id="ctf_type">
+                        <option value="more">Default</option>
+                        <option value="course">Couse</option>
+                        <option value="topic">Topic</option>
+                        <option value="hidden">Hidden</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Optional CTF Challenge Password</label>
+                    <textarea class="form-control" name="ctf_password" ></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">CTF Challenge Award (Emoji)</label>
+                    <textarea class="form-control" name="ctf_award"></textarea>
                 </div>
                 
                 <div class="mb-3">
@@ -131,38 +155,38 @@
             
         }
 
-        async function getInput() {
-    let selectedCategory = document.getElementById("ctf_category").value;
-    let selectedLevel = document.getElementById("challenge_list").value;
+    async function getInput() {
+        let selectedCategory = document.getElementById("ctf_category").value;
+        let selectedLevel = document.getElementById("challenge_list").value;
 
-    const extraForm = document.getElementById("challenge_form");
+        const extraForm = document.getElementById("challenge_form");
 
-    if (selectedCategory && selectedLevel) {
-        extraForm.innerHTML = ""; // clear
-        extraForm.style.display = "block";
-    } else {
-        extraForm.style.display = "none";
-        return;
+        if (selectedCategory && selectedLevel) {
+            extraForm.innerHTML = ""; // clear
+            extraForm.style.display = "block";
+        } else {
+            extraForm.style.display = "none";
+            return;
+        }
+
+        try {
+            let response = await fetch(`http://localhost.pwn.college/templates/${selectedCategory}/${selectedLevel}`);
+            let inputs = await response.json();
+
+            console.log(inputs);
+
+            inputs.forEach(function(item) {
+                extraForm.innerHTML += 
+                    `<div class="mb-3">
+                        <label for="${item}">Input ${item}:</label>
+                        <input type="text" class="form-control" id="${item}" name="${item}">
+                    </div>`;
+            });
+
+        } catch (error) {
+            console.error("Error fetching inputs:", error);
+        }
     }
-
-    try {
-        let response = await fetch(`http://localhost.pwn.college/templates/${selectedCategory}/${selectedLevel}`);
-        let inputs = await response.json();
-
-        console.log(inputs);
-
-        inputs.forEach(function(item) {
-            extraForm.innerHTML += 
-                `<div class="mb-3">
-                    <label for="${item}">Input ${item}:</label>
-                    <input type="text" class="form-control" id="${item}" name="${item}">
-                </div>`;
-        });
-
-    } catch (error) {
-        console.error("Error fetching inputs:", error);
-    }
-}
     </script>
 </body>
 {% endblock %}

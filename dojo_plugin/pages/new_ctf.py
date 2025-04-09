@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask import Blueprint, Response, render_template, abort
 import yaml
+import subprocess
 import runpy
 import os
 import shutil
@@ -9,7 +10,7 @@ from CTFd.utils.decorators import authed_only
 from CTFd.plugins import bypass_csrf_protection
 
 
-
+repo_dir = "/data/generated_repos/"
 
 new_ctf = Blueprint("pwncollege_new_ctf", __name__)
 @new_ctf.route('/new-ctf', methods=['GET', 'POST'])
@@ -34,18 +35,41 @@ def create_ctf():
 
         # Filter data to include only the allowed keys
         filtered_data = {key: data[key] for key in allowed_keys if key in data}
-        dirs = os.listdir(levelPath)
-        os.makedirs("/tmp/repoDir", exist_ok=True)
-        os.makedirs("/tmp/file_gen", exist_ok=True)  # Create directory if it doesn't exist
-        with open("/tmp/file_gen/input.yml", "w") as f:
-            f.write("your data here")
+        for key in filtered_data.keys():
+            try:
+                filtered_data[key] = int(filtered_data[key])
+            except:
+                try:
+                    filtered_data[key] = float(filtered_data[key])
+                except:
+                    print("Do nothing")
+
+        with open( "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/input.yml", "r") as f:
+            allowed_keys = yaml.safe_load(f)
+        filtered_file_gen = {key: data["ctf_" + key] for key in allowed_keys if "ctf_" + key in data}
         
+        dirs = os.listdir(levelPath)
+        os.makedirs(repo_dir + "repoDir", exist_ok=True)
+        os.makedirs(repo_dir + "file_gen", exist_ok=True)  # Create directory if it doesn't exist
         for file in dirs:
-            shutil.copy(levelPath + "/" + file, "/tmp/repoDir/"+file)
+            shutil.copy(levelPath + "/" + file, repo_dir + "repoDir/"+file)
 
-        with open("/tmp/repoDir/input.yml", "w") as f:
-            f.write("your data here")
-
+        
+        
+        
+        #Grab all data about challenge input
+        with open( repo_dir + "repoDir/input.yml", "w") as f:
+            yaml.dump(filtered_data, f)
+        files = []
+        for file in os.listdir(repo_dir + "repoDir"):
+            files.append(repo_dir + "repoDir/" + file)
+        filtered_file_gen["modules"] = [["mod-name", "mod-id", "mod-desc", [["chal-name", files]]]]
+        #Grab all necessary data from post request for repo file   
+        with open(repo_dir + "file_gen/input.yml", "w") as f:
+            yaml.dump(filtered_file_gen, f)
+        
+        result = subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/file_gen.py", repo_dir + "file_gen/input.yml", repo_dir + "githubRepo/"],     capture_output=True, text=True)
+        return os.listdir(repo_dir + "githubRepo/")
         #return redirect(url_for("pwncollege_dojos.listing"))
 
     return render_template('new_ctf.html')
