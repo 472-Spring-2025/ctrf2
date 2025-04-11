@@ -5,7 +5,7 @@ type: course
 password: 
 award: 😀
 image: 
-modules: [[modulename1, moduleid1, moduledescription1, [[challenge1name, [input/exec/sample1]]]]]
+modules: [[modulename1, moduleid1, moduledescription1, [[challenge1name, [input.yml]]]]]
 
 
 

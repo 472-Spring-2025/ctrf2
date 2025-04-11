@@ -1,3 +1,5 @@
 #!/bin/bash
+pip install pyyaml
+echo "init script ran!" > /tmp/init_test.log
 python grep_template.py
 rm input.yml

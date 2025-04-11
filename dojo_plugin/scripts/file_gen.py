@@ -5,14 +5,14 @@ import os
 import shutil
 from typing import List
 
-baseRepoDir = "../code-example-dojo"
+baseRepoDir = "/data/generated_repos/githubRepo"
 
 class YmlFile(ABC):
     def __init__(self, id: str, name: str, description: Optional[str] = None):
         if not id or not name or not id.strip() or not name.strip():
             raise ValueError("ID and name are required")
         
-        self.id = str(id).lower
+        self.id = str(id).lower()
         self.name = name
         self.description = description
 
@@ -57,7 +57,7 @@ class RepositoryLevelYmlFile(YmlFile):
 
 class Challenge:
     def __init__(self, id: str, name: str, files: List[str], parent = None):
-        self.id = str(id).lower
+        self.id = str(id).lower()
         self.name = name
         self.files = files
         self.parent = parent
@@ -128,7 +128,7 @@ def get_code(input_source, modules: List[ModuleLevelYml], repoDir):
                     break
                 for file_path in file_paths:
                     source = os.path.abspath(file_path)
-                    dest_dir = os.path.join(repoDir, m.name.lower(), c.id())
+                    dest_dir = os.path.join(repoDir, m.name.lower(), c.id)
                     dest = os.path.join(dest_dir, os.path.basename(source))
                     
                     try:
@@ -177,7 +177,7 @@ def write_to_files(rlyf: RepositoryLevelYmlFile, module_level_ymls: List[ModuleL
             mod_path = os.path.join(repoDir, mod.name.lower())
             os.makedirs(mod_path, exist_ok=True)
             for c in mod.challenges:
-                os.makedirs(os.path.join(mod_path, c.id()), exist_ok=True)
+                os.makedirs(os.path.join(mod_path, c.id), exist_ok=True)
         
         # Write repository level YAML
         with open(f"{repoDir}/dojo.yml", "w") as repo_out:

@@ -20,6 +20,7 @@ def create_ctf():
         #Needs to grab the runnable script, a viable input file, and the scripts specific __init__ file
         #After, it should take these, run the file population script, and run the repo generation script
         #Push that repository to github, then get the repository and add it to the global dojo list (post request on /create-dojo or something)
+
         ctf_category = request.form.get("ctf_category")
         challenge_list = request.form.get("challenge_list")
 
@@ -47,10 +48,22 @@ def create_ctf():
         with open( "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/input.yml", "r") as f:
             allowed_keys = yaml.safe_load(f)
         filtered_file_gen = {key: data["ctf_" + key] for key in allowed_keys if "ctf_" + key in data}
-        
         dirs = os.listdir(levelPath)
-        os.makedirs(repo_dir + "repoDir", exist_ok=True)
-        os.makedirs(repo_dir + "file_gen", exist_ok=True)  # Create directory if it doesn't exist
+        
+        try:
+            os.makedirs(repo_dir + "repoDir")
+            os.makedirs(repo_dir + "file_gen")  # Create directory if it doesn't exist
+            os.makedirs(repo_dir + "githubRepo")
+        except:
+            shutil.rmtree(repo_dir)
+            os.makedirs(repo_dir + "repoDir")
+            os.makedirs(repo_dir + "file_gen")
+            os.makedirs(repo_dir + "githubRepo")
+        result = subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/init_or_clone_repo.py", filtered_file_gen["name"]])
+        
+        
+
+
         for file in dirs:
             shutil.copy(levelPath + "/" + file, repo_dir + "repoDir/"+file)
 
@@ -68,8 +81,10 @@ def create_ctf():
         with open(repo_dir + "file_gen/input.yml", "w") as f:
             yaml.dump(filtered_file_gen, f)
         
-        result = subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/file_gen.py", repo_dir + "file_gen/input.yml", repo_dir + "githubRepo/"],     capture_output=True, text=True)
-        return os.listdir(repo_dir + "githubRepo/")
+        subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/file_gen.py", repo_dir + "file_gen/input.yml", repo_dir + "githubRepo/"],     )
+        result = subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/push_repo.py", filtered_file_gen["name"], "afluffybunny7"], capture_output=True, text=True)
+        input = yaml.safe_load(open(repo_dir + "githubRepo/mod-name/module.yml"))
+        return input["challenges"]
         #return redirect(url_for("pwncollege_dojos.listing"))
 
     return render_template('new_ctf.html')
