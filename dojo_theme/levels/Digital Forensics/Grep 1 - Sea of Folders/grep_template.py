@@ -48,7 +48,7 @@ def arr_incriment(arr, idx, num_dirs):
         arr = arr_incriment(arr, idx - 1, num_dirs)
     return arr
 
-base = "output"
+base = "/challenge/begin"
 extra = ""
 
 
