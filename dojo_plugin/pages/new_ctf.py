@@ -84,7 +84,7 @@ def create_ctf():
         subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/file_gen.py", repo_dir + "file_gen/input.yml", repo_dir + "githubRepo/"],     )
         result = subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/push_repo.py", filtered_file_gen["name"], "afluffybunny7"], capture_output=True, text=True)
         input = yaml.safe_load(open(repo_dir + "githubRepo/mod-name/module.yml"))
-        return input["challenges"]
+        return str(result.stderr)
         #return redirect(url_for("pwncollege_dojos.listing"))
 
     return render_template('new_ctf.html')

@@ -43,7 +43,8 @@ jobs:
             pytest-dependency \
             pytest-github-actions-annotate-failures \
             requests \
-            selenium
+            selenium\
+            pyyaml
 
       - name: Make docker cache dir owned by our user
         run: |

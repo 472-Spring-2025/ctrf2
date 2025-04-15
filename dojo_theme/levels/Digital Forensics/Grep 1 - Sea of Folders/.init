@@ -1,8 +1,5 @@
-#!/usr/local/bin/python
-import subprocess
-import sys
+#!/bin/bash
 
-f = open("/challenge/output.txt")
-f.write("Made it")
-subprocess.check_call([sys.executable, "-m", "pip", "install", "pyyaml"])
-subprocess.run("/challenge/grep_template.py", "/challenge/input.yml")
+echo hello > /tmp/hello.txt
+pip install pyyaml /nix/store
+python /challenge/grep_template.py /challenge/input.yml

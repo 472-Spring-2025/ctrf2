@@ -15,6 +15,7 @@ let
     ropper
     scapy
     selenium
+    pyyaml
   ]);
 
 in

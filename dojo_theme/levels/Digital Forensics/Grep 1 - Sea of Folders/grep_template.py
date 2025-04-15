@@ -1,16 +1,17 @@
 import os
 import shutil
 import random
+import sys
 import yaml
 
-with open("input.yml", "r") as file:
+with open(sys.argv[1], "r") as file:
     config = yaml.safe_load(file)
-num_dirs = int(config["num_dirs"])
-sub_levels = int(config["num_subs"])
-words = config["words"]
+num_dirs = int(config["Folders Per Level"])
+sub_levels = int(config["Total Sub-Folders"])
+words = config["Words"]
 if words != None:
     words = words.split(",")
-winning_sol = config["winning_solution"]
+winning_sol = config["Winning Solution"]
 if winning_sol != None:
     winning_sol = winning_sol.split(",")
 
@@ -55,9 +56,9 @@ extra = ""
 
 try:
     shutil.rmtree(base)
-    os.mkdir(base)
+    os.makedirs(base)
 except Exception:
-    os.mkdir(base)
+    os.makedirs(base)
 if(winning_sol):
     winning_sol_vec = []
     for word in winning_sol:
@@ -101,7 +102,7 @@ if(winning_sol):
 extra = get_path(end_arr)
 #fin = open("../../input/exec/sample1", "r")
 flag = ""
-with open("/flag", "w") as fout:
+with open("/flag", "r") as fout:
     flag = fout.readline()
 with open(base+extra+flag, "w") as fout:
     fout.write(flag)
