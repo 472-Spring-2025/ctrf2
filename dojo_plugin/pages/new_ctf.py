@@ -95,7 +95,6 @@ def create_ctf():
         private_key = (request.form.get("private_key") or "").replace("\r\n", "\n")
         
         create_dojo(user, repository, public_key, private_key, None)
-        return "Yippee"
         return redirect(url_for("pwncollege_dojos.listing"))
         
     public_key, private_key = generate_ssh_keypair()
