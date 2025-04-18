@@ -38,3 +38,5 @@ tenacity==6.2.0
 pybluemonday==0.0.12
 freezegun==1.2.2
 Flask-Babel==2.0.0
+pyyaml==5.4.1
+Pillow==10.2.0

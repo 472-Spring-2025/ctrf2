@@ -45,7 +45,7 @@ def main():
         print("Usage: python push_repo.py <repo-name> <username>")
         return
 
-    repo_name = sys.argv[1].strip()
+    repo_name = sys.argv[1].strip().replace(" ", "-")
     username = sys.argv[2].strip()
     path = "/data/generated_repos/githubRepo"
     repo_url = f"https://github.com/{username}/{repo_name}.git"

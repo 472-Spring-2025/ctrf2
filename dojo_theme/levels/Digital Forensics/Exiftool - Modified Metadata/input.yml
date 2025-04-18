@@ -1,4 +1,4 @@
-Image Name: new_picture.png
+Image Name: new_picture.jpg
 Meta Data Attributes (attribute1, attribute2, ...): Author,Caption,Flag
-Meta Data Values (Value1, Value2, ... [At least as many as Meta Data Attributes]): Andrew Parr,Pain,This-will-get-replaced
+Meta Data Values (Value1,Value2, ... [At least as many as Meta Data Attributes]): Andrew Parr,A Picture of my CSC 520 Homework,This-will-get-replaced
 Attribute With The Flag: Flag

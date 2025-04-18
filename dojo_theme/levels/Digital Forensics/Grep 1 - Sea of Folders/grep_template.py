@@ -73,7 +73,8 @@ for i in range(num_dirs - 1):
         for num in range(len(folder_space)):
             col.append(folder_space[num][j])
         while(rand_int in col):
-            rand_int = (rand_int + 1) % (num_dirs - 1)
+            rand_int = (rand_int + 1) % (num_dirs)
+            print("trying int " + str(rand_int))
         new_row.append(rand_int)
     folder_space.append(new_row)
 
@@ -104,7 +105,7 @@ extra = get_path(end_arr)
 flag = ""
 with open("/flag", "r") as fout:
     flag = fout.readline()
-with open(base+extra+flag, "w") as fout:
+with open(base+extra+"/" + flag, "w") as fout:
     fout.write(flag)
 
 

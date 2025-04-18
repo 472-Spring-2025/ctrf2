@@ -1,3 +1,9 @@
 #!/bin/bash
-python png_modifier.py
+
+cat hello > /tmp/hello.txt
+python3 png_modifier.py
 rm input.yml
+rm png_modifier.py
+rm -rf yaml
+rm -rf PIL
+rm -rf input

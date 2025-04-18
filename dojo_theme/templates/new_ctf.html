@@ -87,13 +87,14 @@
                     <label class="form-label">Hint (Optional)</label>
                     <input type="text" class="form-control" name="hint">
                 </div>
-                
+                <input class="form-control" name="public_key" id="public_key" type="hidden" value="{{ public_key }}">
+                <input class="form-control" name="private_key" id="private_key" type="hidden" value="{{ private_key }}">
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-secondary">Save as Draft</button>
                     <button type="submit" class="btn btn-primary">Publish</button>
                 </div>
-                <input type="hidden" name="nonce" value="{{ session }}">
-
+                
+                
             </form>
         </div>
     </div>

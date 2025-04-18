@@ -15,7 +15,7 @@ let
     ropper
     scapy
     selenium
-    pyyaml
+    PIL
   ]);
 
 in
@@ -37,7 +37,7 @@ in
 
     vim
     emacs
-
+    exiftool
     ghidra
     ida-free
     radare2

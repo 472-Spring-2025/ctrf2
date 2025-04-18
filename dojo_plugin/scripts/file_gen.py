@@ -130,11 +130,12 @@ def get_code(input_source, modules: List[ModuleLevelYml], repoDir):
                     source = os.path.abspath(file_path)
                     dest_dir = os.path.join(repoDir, m.name.lower(), c.id)
                     dest = os.path.join(dest_dir, os.path.basename(source))
-                    
+                    print(source)
                     try:
                         shutil.copy2(source, dest)
-                    except IOError as e:
-                        print(f"Error copying file: {e}")
+                    except:
+                        shutil.rmtree(dest, ignore_errors=True)
+                        shutil.copytree(source, dest)
     except Exception as e:
         print(f"Error: {e}")
 
@@ -158,8 +159,9 @@ def get_module_level(input_source, rlyf: RepositoryLevelYmlFile) -> List[ModuleL
             for file in chal[1]:
                 try:
                     open(file, "r")
-                except:
-                    raise ValueError("Filename des not exist")
+                except :
+                    os.listdir(file)
+                
             challenges.append(Challenge(chal[0].lower(), chal[0], chal[1]))
 
         

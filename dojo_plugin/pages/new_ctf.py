@@ -8,7 +8,9 @@ import shutil
 from CTFd.utils.user import get_current_user
 from CTFd.utils.decorators import authed_only
 from CTFd.plugins import bypass_csrf_protection
-
+import requests
+from ..api.v1.dojo import create_dojo
+from ..utils.dojo import generate_ssh_keypair
 
 repo_dir = "/data/generated_repos/"
 
@@ -50,23 +52,23 @@ def create_ctf():
         filtered_file_gen = {key: data["ctf_" + key] for key in allowed_keys if "ctf_" + key in data}
         dirs = os.listdir(levelPath)
         
-        try:
-            os.makedirs(repo_dir + "repoDir")
-            os.makedirs(repo_dir + "file_gen")  # Create directory if it doesn't exist
-            os.makedirs(repo_dir + "githubRepo")
-        except:
-            shutil.rmtree(repo_dir)
-            os.makedirs(repo_dir + "repoDir")
-            os.makedirs(repo_dir + "file_gen")
-            os.makedirs(repo_dir + "githubRepo")
-        result = subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/init_or_clone_repo.py", filtered_file_gen["name"]])
-        
+        shutil.rmtree(repo_dir)
+        os.makedirs(repo_dir + "repoDir")
+        os.makedirs(repo_dir + "file_gen")
+        os.makedirs(repo_dir + "githubRepo")
+        result = subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/init_or_clone_repo.py", filtered_file_gen["name"]], capture_output=True, text=True)
         
 
-
+        directory_in_chal = []
         for file in dirs:
-            shutil.copy(levelPath + "/" + file, repo_dir + "repoDir/"+file)
-
+            try:
+                shutil.copy(levelPath + "/" + file, repo_dir + "repoDir/"+file)
+            except:
+                directory_in_chal.append(file)
+        for dir in directory_in_chal:
+            shutil.copytree(levelPath + "/" + dir, repo_dir + "repoDir/"+dir)
+        
+        
         
         
         
@@ -81,13 +83,27 @@ def create_ctf():
         with open(repo_dir + "file_gen/input.yml", "w") as f:
             yaml.dump(filtered_file_gen, f)
         
-        subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/file_gen.py", repo_dir + "file_gen/input.yml", repo_dir + "githubRepo/"],     )
+        subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/file_gen.py", repo_dir + "file_gen/input.yml", repo_dir + "githubRepo/"], capture_output=True, text=True)
         result = subprocess.run(["python", "/opt/CTFd/CTFd/plugins/dojo_plugin/scripts/push_repo.py", filtered_file_gen["name"], "afluffybunny7"], capture_output=True, text=True)
         input = yaml.safe_load(open(repo_dir + "githubRepo/mod-name/module.yml"))
-        return str(result.stderr)
-        #return redirect(url_for("pwncollege_dojos.listing"))
-
-    return render_template('new_ctf.html')
+        
+        user = get_current_user()
+        
+        repository = f"afluffybunny7/{filtered_file_gen['name']}".replace(" ", "-")
+        spec = ""
+        public_key = request.form.get("public_key")
+        private_key = (request.form.get("private_key") or "").replace("\r\n", "\n")
+        
+        create_dojo(user, repository, public_key, private_key, None)
+        return "Yippee"
+        return redirect(url_for("pwncollege_dojos.listing"))
+        
+    public_key, private_key = generate_ssh_keypair()
+    return render_template(
+        "new_ctf.html",
+        public_key=public_key,
+        private_key=private_key,
+    )
 
 
     

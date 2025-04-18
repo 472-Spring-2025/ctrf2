@@ -2,8 +2,10 @@ import os
 import subprocess
 import requests
 import sys
+import shutil
 
 def repo_exists(username, repo_name, token):
+    repo_name = repo_name.replace(" ", "-")
     url = f"https://api.github.com/repos/{username}/{repo_name}"
     headers = {"Authorization": f"token {token}"}
     response = requests.get(url, headers=headers)
@@ -31,12 +33,23 @@ def clone_repo_if_safe(repo_url, path):
     subprocess.run(["git", "clone", repo_url, path], check=True)
     print("📥 Repo cloned successfully.")
 
+def clear_repo_directory(path):
+    print("🧹 Clearing existing repo directory...")
+    for item in os.listdir(path):
+        if item == ".git":
+            continue
+        item_path = os.path.join(path, item)
+        if os.path.isdir(item_path):
+            shutil.rmtree(item_path)
+        else:
+            os.remove(item_path)
+
 def main():
     if len(sys.argv) < 2:
         print("Usage: python init_or_clone_repo.py <repo-name>")
         return
 
-    repo_name = sys.argv[1].strip()
+    repo_name = sys.argv[1].strip().replace(" ", "-")
     path = "/data/generated_repos/githubRepo"
     username = "afluffybunny7"  # 🔒 Set your actual GitHub username
     private = False
@@ -50,6 +63,8 @@ def main():
 
     repo_url = f"https://github.com/{username}/{repo_name}.git"
 
+    
+
     if repo_exists(username, repo_name, token):
         print(f"ℹ️ Repo '{repo_name}' already exists.")
         try:
@@ -60,6 +75,6 @@ def main():
         created_repo_url = create_personal_repo(repo_name, token, private)
         if created_repo_url:
             print(f"✅ Repo ready at: {created_repo_url}")
-
+    clear_repo_directory(path)
 if __name__ == "__main__":
     main()
