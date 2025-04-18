@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New CTF Challenge</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <div class="card shadow p-4">
+            <h2 class="text-center">New CTRF Challenge</h2>
+            <p class="text-center text-muted">Create Your New CTF From Scratch!</p>
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form action="{{url_for('pwncollege_new_ctf.create_ctf')}}" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">CTF Challenge ID</label>
+                    <input type="text" class="form-control" name="ctf_id" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">CTF Challenge Name</label>
+                    <input type="text" class="form-control" name="ctf_name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">CTF Challenge Description</label>
+                    <textarea class="form-control" name="ctf_description" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Optional CTF Challenge Type</label>
+                    <select class="form-select" name="ctf_type" id="ctf_type">
+                        <option value="more">Default</option>
+                        <option value="course">Course</option>
+                        <option value="topic">Topic</option>
+                        <option value="hidden">Hidden</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Optional CTF Challenge Password</label>
+                    <textarea class="form-control" name="ctf_password" ></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">CTF Challenge Award (Emoji)</label>
+                    <textarea class="form-control" name="ctf_award"></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">CTF Challenge Category</label>
+                    <select class="form-select" name="ctf_category" id="ctf_category" onchange=updateCategory() required>
+                        <option value="">Select a Category</option>
+                        
+                    </select>
+                </div>
+
+                <div id="extraForm" style="display: none;">
+                    <h4>Additional Information</h4>
+                    <div class="mb-3">
+                        <label class="form-label">Level Select</label>
+                        <select class="form-select" name="challenge_list" id="challenge_list" onchange=getInput()>
+                        </select>
+                    </div>
+                    
+                </div>
+
+                <div id="challenge_form" style="display: none;">
+                    <div class="mb-3">
+                        <label for="name">Input:</label>
+                        <input type="text" id="name" name="name">
+                        
+                        
+                    </div>   
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Hint (Optional)</label>
+                    <input type="text" class="form-control" name="hint">
+                </div>
+                <input class="form-control" name="public_key" id="public_key" type="hidden" value="{{ public_key }}">
+                <input class="form-control" name="private_key" id="private_key" type="hidden" value="{{ private_key }}">
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-secondary">Save as Draft</button>
+                    <button type="submit" class="btn btn-primary">Publish</button>
+                </div>
+                
+                
+            </form>
+        </div>
+    </div>
+
+    <script>async function getCategories(){
+        try {
+        const response = await fetch('http://localhost.pwn.college/templates');
+        
+        // Check if response is OK (status 200)
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        // Parse the JSON response
+        const data = await response.json();
+        console.log(data); // Debugging: Log the response
+
+        // Assuming `data.categories` is the array of directories
+        const directories = data.categories.join(", ");
+        template_list = document.getElementById("ctf_category");
+        
+                data.categories.forEach(function (item) {
+                    let option = new Option(item, item);
+                    template_list.add(option);
+                });
+            
+    } catch (error) {
+        console.error("Error fetching categories:", error);
+    }
+
+    }
+
+    getCategories()
+    
+    async function updateCategory() {
+            let selectedCategory = document.getElementById("ctf_category").value;
+            
+
+            // Show extra form when a category is selected
+            let extraForm = document.getElementById("extraForm");
+            if (selectedCategory) {
+                extraForm.style.display = "block"; // Show the extra form
+            } else {
+                extraForm.style.display = "none";  // Hide it when no category is selected
+            }
+
+            challenge_list = document.getElementById("challenge_list")
+            challenge_list.innerHTML = '<option value="">Select a Sub-Category</option>';
+            let response =  await fetch('http://localhost.pwn.college/templates/' + selectedCategory)
+            
+            let subCategories = await response.json();
+
+            // Add new options
+            
+                subCategories.templates.forEach(function (item) {
+                    let option = new Option(item, item);
+                    challenge_list.add(option);
+                });
+            
+        }
+
+    async function getInput() {
+        let selectedCategory = document.getElementById("ctf_category").value;
+        let selectedLevel = document.getElementById("challenge_list").value;
+
+        const extraForm = document.getElementById("challenge_form");
+
+        if (selectedCategory && selectedLevel) {
+            extraForm.innerHTML = ""; // clear
+            extraForm.style.display = "block";
+        } else {
+            extraForm.style.display = "none";
+            return;
+        }
+
+        try {
+            let response = await fetch(`http://localhost.pwn.college/templates/${selectedCategory}/${selectedLevel}`);
+            let inputs = await response.json();
+
+            console.log(inputs);
+
+            inputs.forEach(function(item) {
+                extraForm.innerHTML += 
+                    `<div class="mb-3">
+                        <label for="${item}">Input ${item}:</label>
+                        <input type="text" class="form-control" id="${item}" name="${item}">
+                    </div>`;
+            });
+
+        } catch (error) {
+            console.error("Error fetching inputs:", error);
+        }
+    }
+    </script>
+</body>
+{% endblock %}

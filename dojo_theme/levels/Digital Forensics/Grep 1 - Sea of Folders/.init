@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo hello > /tmp/hello.txt
+python3 /challenge/grep_template.py /challenge/input.yml
+rm /challenge/grep_template.py 
+rm /challenge/input.yml
+rm -rf /challenge/yaml

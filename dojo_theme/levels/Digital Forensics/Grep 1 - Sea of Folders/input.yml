@@ -1,0 +1,6 @@
+#Total Sub-Folders and Winning Solution's length must be the same
+#If using Words, must have at least Folders Per Level examples
+Folders Per Level: 5
+Total Sub-Folders: 5
+Words: a,b,c,d,e
+Winning Solution: a,a,a,a,a

@@ -5,10 +5,10 @@ While we recommend using the [pwn.college](https://pwn.college) deployment, you 
 ```sh
 curl -fsSL https://get.docker.com | /bin/sh
 
-DOJO_PATH="./ctrf"
-DATA_PATH="./ctrf/data"
+DOJO_PATH="./dojo"
+DATA_PATH="./dojo/data"
 
-git clone https://github.com/472-Spring-2025/ctrf2 "$DOJO_PATH"
+git clone https://github.com/pwncollege/dojo "$DOJO_PATH"
 docker build -t pwncollege/dojo "$DOJO_PATH"
 
 # this is needed for the dojo's networking
@@ -44,7 +44,7 @@ It will take some time to initialize everything and build the challenge docker i
 You can check on your container (and the progress of the initial build) with:
 
 ```sh
-docker exec ctrf dojo logs
+docker exec dojo dojo logs
 ```
 
 Once things are setup, you should be able to access the dojo and login with username `admin` and password `admin`.
