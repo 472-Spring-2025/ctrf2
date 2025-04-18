@@ -6,6 +6,8 @@
     --brand-green: #78be20;
     --brand-gold: #ffc627;
     --brand-blue: #00a3e0;
+    --brand-red: #ee0c0c;
+    --brand-dark-red: #9c0a0a;
 
     --old-brand-green: #78be20;
     --old-brand-gold: #ffc627;
@@ -54,8 +56,8 @@
     color: var(--brand-black);
     background: linear-gradient(to right,
         transparent 10%,
-        var(--brand-gold) 10%,
-        var(--brand-gold) 90%,
+        var(--brand-dark-red) 10%,
+        var(--brand-dark-red) 90%,
         transparent 90%);
     display: inline-block;
 }
@@ -84,7 +86,7 @@
 }
 
 body {
-    background: #101010;
+    background: #dddddd;
 }
 
 .container {
@@ -100,7 +102,7 @@ b {
 h1, h2, h3, h4 {
     font-family: 'Space Grotesk';
     font-weight: 500;
-    color: var(--brand-green);
+    color: var(--brand-red);
 }
 
 .wordmark {
@@ -111,17 +113,17 @@ h1, h2, h3, h4 {
 }
 
 body, table, .form-control:focus, .close {
-    color: #eaeaea !important;
+    color: #000000 !important;
 }
 
 nav {
     padding: 0.25rem 1rem !important;
-    background-color: #272727;
+    background-color: #fdfdfd;
     border-bottom: 1px dashed var(--brand-light-gray);
 }
 
 .nav-link, .navbar-pulldown {
-    color: var(--brand-gold) !important;
+    color: var(--brand-dark-red) !important;
 }
 
 .navbar > .container {
@@ -305,7 +307,7 @@ p[data-hide="true"] {
     top: 75%;
     transform: translate(-50%, -50%);
     width: 100%;
-    color: #eaeaea;
+    color: #471515;
     font-size: 0.75em;
 }
 
@@ -550,7 +552,7 @@ code {
         background: var(--brand-gold);
     }
     5% {
-        color: var(--brand-green);
+        color: var(--brand-red);
         background: transparent;
     }
     10% {
@@ -558,7 +560,7 @@ code {
         background: var(--brand-gold);
     }
     15% {
-        color: var(--brand-green);
+        color: var(--brand-red);
         background: transparent;
     }
     20% {
@@ -566,7 +568,7 @@ code {
         background: var(--brand-gold);
     }
     25% {
-        color: var(--brand-green);
+        color: var(--brand-red);
         background: transparent;
     }
     30% {
@@ -574,7 +576,7 @@ code {
         background: var(--brand-gold);
     }
     35% {
-        color: var(--brand-green);
+        color: var(--brand-red);
         background: transparent;
     }
     40% {

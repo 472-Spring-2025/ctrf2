@@ -5,10 +5,10 @@ While we recommend using the [pwn.college](https://pwn.college) deployment, you 
 ```sh
 curl -fsSL https://get.docker.com | /bin/sh
 
-DOJO_PATH="./ctrf"
-DATA_PATH="./ctrf/data"
+DOJO_PATH="./dojo"
+DATA_PATH="./dojo/data"
 
-git clone https://github.com/472-Spring-2025/ctrf2 "$DOJO_PATH"
+git clone https://github.com/pwncollege/dojo "$DOJO_PATH"
 docker build -t pwncollege/dojo "$DOJO_PATH"
 
 # this is needed for the dojo's networking

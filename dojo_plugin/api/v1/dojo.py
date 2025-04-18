@@ -40,7 +40,7 @@ def create_dojo(user, repository, public_key, private_key, spec):
             assert re.match(repository_re, repository), f"Invalid repository, expected format: <code>{repository_re}</code>"
 
             assert not Dojos.query.filter_by(repository=repository).first(), DOJO_EXISTS
-
+            
             dojo_dir = dojo_clone(repository, private_key)
         elif spec:
             assert is_admin(), "Must be an admin user to create dojos from spec rather than repositories"
@@ -69,7 +69,7 @@ def create_dojo(user, repository, public_key, private_key, spec):
         traceback.print_exc(file=sys.stderr)
         print(str(e.stderr), file=sys.stderr, flush=True)
         deploy_url = f"https://github.com/{repository}/settings/keys"
-        return {"success": False, "error": f'Failed to clone: <a href="{deploy_url}" target="_blank">add deploy key</a>'}, 400
+        return {"success": False, "error": f'Failed to clone: <a href="{deploy_url}" target="_blank">add deploy key</a>{e}'}, 400
 
     except IntegrityError as e:
         return {"success": False, "error": DOJO_EXISTS}, 400
